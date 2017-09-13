@@ -1,1 +1,26 @@
-test
+apply plugin: 'idea'
+apply plugin: 'scala'
+
+task "createDirs" << {
+    sourceSets*.scala.srcDirs*.each { it.mkdirs() }
+    sourceSets*.resources.srcDirs*.each { it.mkdirs() }
+}
+
+repositories{
+    mavenCentral()
+    mavenLocal()
+}
+
+dependencies{
+    compile "org.scala-lang:scala-library:2.10.4"
+    compile "org.scala-lang:scala-compiler:2.10.4"
+    compile "org.scala-lang:scala-reflect:2.10.4"
+    compile "com.typesafe.akka:akka-actor_2.11:2.4.4"
+    testCompile "junit:junit:4.11"
+}
+
+task run(type: JavaExec, dependsOn: classes) {
+    main = 'Main'
+    classpath sourceSets.main.runtimeClasspath
+    classpath configurations.runtime
+}
