@@ -1,5 +1,7 @@
 import akka.actor.{Actor, ActorLogging, ActorRef, ActorSystem, DeadLetter, Kill, PoisonPill, Props}
 
+import scala.concurrent.Future
+
 object MyAkka {
   def main(args: Array[String]): Unit = {
     //1. 定义一个ActorSystem对象，用于管理所有actor
@@ -11,7 +13,7 @@ object MyAkka {
     //3. 将DeadLetter监听器注册到事件流中，监听DeadLetter发送的消息
     demo.eventStream.subscribe(watcher,classOf[MyDeadLetterActor])
     while (true) {
-      val command = scala.io.StdIn.readLine("请输入要执行的命令：\n")
+      val command = readLine("请输入要执行的命令：\n")
       student ! command
       Thread.sleep(1000l)
     }
